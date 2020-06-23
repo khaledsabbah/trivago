@@ -7,8 +7,17 @@ namespace App\Hydrators;
 use App\Contracts\IHydrate;
 use App\Entities\Room;
 
+/**
+ * Class RoomHydrator
+ * @package App\Hydrators
+ */
 class RoomHydrator implements IHydrate
 {
+    /**
+     * @param array $data
+     * @param array|null $keys
+     * @return Room|mixed
+     */
     public static function hydrate(array $data, array $keys = null)
     {
         // TODO: Implement hydrate() method.

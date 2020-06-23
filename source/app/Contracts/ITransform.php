@@ -3,9 +3,16 @@
 namespace App\Contracts;
 
 
-
+/**
+ * Interface ITransform
+ * @package App\Contracts
+ */
 interface ITransform
 {
-    public static function transform( $data);
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public static function transform($data);
 
 }
