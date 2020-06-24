@@ -54,7 +54,7 @@ class Room
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -80,7 +80,7 @@ class Room
      */
     public function getTotalPrice(): float
     {
-        return $this->netPrice;
+        return $this->totalPrice;
     }
 
     /**
@@ -113,7 +113,7 @@ class Room
     public function setTaxes(array $taxes): void
     {
         foreach ($taxes as $tax) {
-            if(!is_array($tax)){
+            if (!is_array($tax)) {
                 array_push($this->taxes, TaxHydrator::hydrate((array)$taxes));
                 break;
             }
