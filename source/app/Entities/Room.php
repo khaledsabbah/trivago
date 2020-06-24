@@ -16,6 +16,10 @@ class Room
     /**
      * @var string
      */
+    private $advertiser;
+    /**
+     * @var string
+     */
     private $code;
     /**
      * @var string
@@ -34,6 +38,23 @@ class Room
      */
     private $taxes = [];
 
+    /**
+     * @return string
+     */
+    public function getAdvertiser()
+    {
+        return $this->advertiser;
+    }
+
+    /**
+     * @param string $advertiser
+     * @return Room
+     */
+    public function setAdvertiser(string $advertiser): Room
+    {
+        $this->advertiser = $advertiser;
+        return  $this;
+    }
 
     /**
      * @return string

@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
 abstract class AbstractAdvertiser implements IAdvertiser
 {
 
-    protected $hotels=[];
+    protected $hotels = [];
     protected $advertiserHotels = [];
 
     /**
@@ -31,10 +31,10 @@ abstract class AbstractAdvertiser implements IAdvertiser
             $response = json_decode($response->getBody(), true);
             if (isset($response['hotels']))
                 $this->hotels = $response['hotels'];
-        }catch (GuzzleException $exception){
-            Log::alert('Advertiser API Down '.static::API_URL, ['trace'=>$exception->getTraceAsString()]);
-        }catch (\Exception $exception){
-            Log::alert('Advertiser API Down'.static::API_URL,['trace'=>$exception->getTraceAsString()]);
+        } catch (GuzzleException $exception) {
+            Log::alert('Advertiser API Down ' . static::API_URL, ['trace' => $exception->getTraceAsString()]);
+        } catch (\Exception $exception) {
+            Log::alert('Advertiser API Down' . static::API_URL, ['trace' => $exception->getTraceAsString()]);
         }
 
     }
@@ -56,7 +56,12 @@ abstract class AbstractAdvertiser implements IAdvertiser
     {
         // TODO: Implement mockResponse() method.
         foreach ($this->hotels as $hotel) {
-            $hotelHydrator = HotelHydrator::hydrate($hotel, $this->hotelKeys)->setRoomKeys($this->roomKeys)->setRooms($hotel[$this->hotelKeys['rooms']]);
+            if (is_null($hotel[$this->hotelKeys['rooms']])) {
+                dd($hotel, 'asdf');
+            }
+            $hotelHydrator = HotelHydrator::hydrate($hotel, $this->hotelKeys)
+                ->setRoomKeys($this->roomKeys)
+                ->setRooms($hotel[$this->hotelKeys['rooms']], strrchr(get_class($this), '\\'));
             array_push($this->advertiserHotels, $hotelHydrator);
         }
         return $this->advertiserHotels;

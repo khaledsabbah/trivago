@@ -24,6 +24,7 @@ class RoomTransformer implements ITransform
         $transformerData = [];
         foreach ($rooms as $room) {
             $transformerData[] = [
+                'Advertiser' => $room->getAdvertiser(),
                 'code' => $room->getCode(),
                 'name' => $room->getName(),
                 'net_price' => $room->getNetPrice(),

@@ -29,7 +29,7 @@ class Hotel
     /**
      * @var Room[]
      */
-    private $rooms=[];
+    private $rooms = [];
 
     /**
      * @return string
@@ -93,13 +93,14 @@ class Hotel
     }
 
     /**
-     * @param Room[] $rooms
+     * @param array $rooms
+     * @param string|null $advertiser
      * @return Hotel
      */
-    public function setRooms(array $rooms): Hotel
+    public function setRooms(array $rooms, string $advertiser = null): Hotel
     {
         foreach ($rooms as $room) {
-            array_push($this->rooms, $room instanceof Room?$room:RoomHydrator::hydrate((array)$room, $this->getRoomKeys()));
+            array_push($this->rooms, $room instanceof Room ? $room : RoomHydrator::hydrate((array)$room, $this->getRoomKeys())->setAdvertiser($advertiser));
         }
 
         return $this;
@@ -111,7 +112,7 @@ class Hotel
      */
     public function resetRooms(array $rooms): Hotel
     {
-        $this->rooms=$rooms;
+        $this->rooms = $rooms;
         return $this;
     }
 
