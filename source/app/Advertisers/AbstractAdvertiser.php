@@ -56,9 +56,6 @@ abstract class AbstractAdvertiser implements IAdvertiser
     {
         // TODO: Implement mockResponse() method.
         foreach ($this->hotels as $hotel) {
-            if (is_null($hotel[$this->hotelKeys['rooms']])) {
-                dd($hotel, 'asdf');
-            }
             $hotelHydrator = HotelHydrator::hydrate($hotel, $this->hotelKeys)
                 ->setRoomKeys($this->roomKeys)
                 ->setRooms($hotel[$this->hotelKeys['rooms']], substr(strrchr(get_class($this), '\\'),1));
