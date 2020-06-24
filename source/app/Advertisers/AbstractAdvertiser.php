@@ -7,7 +7,9 @@ namespace App\Advertisers;
 use App\Contracts\IAdvertiser;
 use App\Hydrators\HotelHydrator;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\PromisorInterface;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class AbstractAdvertiser
@@ -16,7 +18,7 @@ use GuzzleHttp\Promise\PromisorInterface;
 abstract class AbstractAdvertiser implements IAdvertiser
 {
 
-    protected $hotels;
+    protected $hotels=[];
     protected $advertiserHotels = [];
 
     /**
@@ -24,10 +26,17 @@ abstract class AbstractAdvertiser implements IAdvertiser
      */
     public function __construct()
     {
-        $response = $this->getAdvertiserData();
-        $response = json_decode($response->getBody(), true);
-        if (isset($response['hotels']))
-            $this->hotels = $response['hotels'];
+        try {
+            $response = $this->getAdvertiserData();
+            $response = json_decode($response->getBody(), true);
+            if (isset($response['hotels']))
+                $this->hotels = $response['hotels'];
+        }catch (GuzzleException $exception){
+            Log::alert('Advertiser API Down '.static::API_URL, ['trace'=>$exception->getTraceAsString()]);
+        }catch (\Exception $exception){
+            Log::alert('Advertiser API Down'.static::API_URL,['trace'=>$exception->getTraceAsString()]);
+        }
+
     }
 
 
