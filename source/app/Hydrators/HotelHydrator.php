@@ -22,7 +22,7 @@ class HotelHydrator implements IHydrate
     {
         // TODO: Implement hydrate() method.
         $hotel = new Hotel();
-        $hotel->setName($data[$hotelKeys['name']]);
+        $hotel->setHotelName($data[$hotelKeys['name']]);
         $hotel->setStars($data[$hotelKeys['stars']]);
         return $hotel;
     }
