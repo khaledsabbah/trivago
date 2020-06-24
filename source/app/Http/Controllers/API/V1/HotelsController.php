@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Factory\AbstractAdvertiserFactory;
 use App\Http\Controllers\ApiController;
 use App\Services\HotelService;
+use App\Transformers\HotelTransformer;
 use Illuminate\Http\Request;
 
 class HotelsController extends ApiController
@@ -23,10 +24,11 @@ class HotelsController extends ApiController
 
     public function index(Request $request)
     {
-        $hotels=[];
-        $advertisers = config('advertisers');
-        foreach ($advertisers as $advertiser) {
-            array_push($hotels, AbstractAdvertiserFactory::Instantiate($advertiser)->mockAdvertiserResponse());
-        }
+        $this->hotelService
+            ->getAdvertiserssData(config('advertisers'))
+            ->combinHotels()
+            ->removeRedundentRooms()
+            ->SortHotelsByRoomPrice();
+        return $this->respond(['hotels'=>HotelTransformer::transform($this->hotelService->getHotels())]);
     }
 }
