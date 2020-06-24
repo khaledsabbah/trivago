@@ -13,6 +13,6 @@ interface ITransform
      * @param $data
      * @return mixed
      */
-    public static function transform($data);
+    public static function transform(array $data): array;
 
 }
