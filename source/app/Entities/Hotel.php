@@ -51,7 +51,7 @@ class Hotel
     /**
      * @return string
      */
-    public function getName(): string
+    public function getHotelName(): string
     {
         return $this->name;
     }
@@ -60,7 +60,7 @@ class Hotel
      * @param string $name
      * @return Hotel
      */
-    public function setName(string $name): Hotel
+    public function setHotelName(string $name): Hotel
     {
         $this->name = $name;
         return $this;
@@ -99,10 +99,26 @@ class Hotel
     public function setRooms(array $rooms): Hotel
     {
         foreach ($rooms as $room) {
-            array_push($this->rooms, RoomHydrator::hydrate((array)$room, $this->getRoomKeys()));
+            array_push($this->rooms, $room instanceof Room?$room:RoomHydrator::hydrate((array)$room, $this->getRoomKeys()));
         }
 
         return $this;
+    }
+
+    /**
+     * @param Room[] $rooms
+     * @return Hotel
+     */
+    public function resetRooms(array $rooms): Hotel
+    {
+        $this->rooms=$rooms;
+        return $this;
+    }
+
+    public function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return $this->getHotelName();
     }
 
 
