@@ -61,7 +61,7 @@ abstract class AbstractAdvertiser implements IAdvertiser
             }
             $hotelHydrator = HotelHydrator::hydrate($hotel, $this->hotelKeys)
                 ->setRoomKeys($this->roomKeys)
-                ->setRooms($hotel[$this->hotelKeys['rooms']], strrchr(get_class($this), '\\'));
+                ->setRooms($hotel[$this->hotelKeys['rooms']], substr(strrchr(get_class($this), '\\'),1));
             array_push($this->advertiserHotels, $hotelHydrator);
         }
         return $this->advertiserHotels;
