@@ -26,7 +26,7 @@ class HotelService
         return $this->hotels;
     }
 
-    public function getAdvertiserssData(array $advertisers): HotelService
+    public function getAdvertisersData(array $advertisers): HotelService
     {
         $this->sort = isset(request()->sort) && is_numeric(request()->sort) ? request()->sort : $this->sort;
         foreach ($advertisers as $advertiser) {

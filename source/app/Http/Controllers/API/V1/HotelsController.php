@@ -24,11 +24,12 @@ class HotelsController extends ApiController
 
     public function index(Request $request)
     {
-        $this->hotelService
-            ->getAdvertiserssData(config('advertisers'))
+        $hotels= $this->hotelService
+            ->getAdvertisersData(config('advertisers'))
             ->combinHotels()
             ->removeRedundentRooms()
-            ->SortHotelsByRoomPrice();
-        return $this->respond(['hotels'=>HotelTransformer::transform($this->hotelService->getHotels())]);
+            ->SortHotelsByRoomPrice()
+            ->getHotels();
+        return $this->respond(['hotels'=>HotelTransformer::transform($hotels)]);
     }
 }
