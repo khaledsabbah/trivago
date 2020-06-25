@@ -58,15 +58,16 @@ I tried to apply S.O.L.I.D principles & use some design pattern and Hydrate ever
 3. Inside `Flipkey.php`, Define 3 attributes that works as Mapper for API reposponse:
 ```php
         const API_URL = '<String containing API url>'; 
-             const API_URL= "https://f704cb9e-bf27-440c-a927-4c8e57e3bad1.mock.pstmn.io/s2/availability";
+             ex: const API_URL= "https://f704cb9e-bf27-440c-a927-4c8e57e3bad1.mock.pstmn.io/s2/availability";
     
         protected $hotelKeys = ["<< Key Used In Code and Never Change That Key >> " => "API Reponse Key Mapper & changes Per Advertiser Response"];
-             protected $hotelKeys = ['name' => 'name', 'stars' => 'stars', 'rooms' => 'rooms'];
+             ex: protected $hotelKeys = ['name' => 'name', 'stars' => 'stars', 'rooms' => 'rooms'];
     
         protected $roomKeys = ["<< Key Used In Code and Never Changes >> " => "API Reponse Keys Mapper & changes Per Advertiser Response"];
-             protected $roomKeys = ['code' => 'code', 'name' => 'name', 'net_price' => 'net_rate', 'taxes' => 'taxes', 'total_price' => "totalPrice"];
-            
+             ex: protected $roomKeys = ['code' => 'code', 'name' => 'name', 'net_price' => 'net_rate', 'taxes' => 'taxes', 'total_price' => "totalPrice"];
 ```
+>       If for some advertisers, some keys doesn't exist. In that case you remove the key with value like the next roomKeys mapper without Taxes key
+>       ex: protected $roomKeys = ['code' => 'code', 'name' => 'name', 'net_price' => 'net_rate', 'total_price' => "totalPrice"];
 Look at This Image ![alt text](../images/hotel.png)
         
 4. Go to the browser and write endpoint url [http://localhost:8089/api/v1/hotels](http://localhost:8089/api/v1/hotels)
