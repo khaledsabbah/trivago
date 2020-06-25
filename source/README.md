@@ -1,85 +1,78 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Trivago Pre-Interview Task
+-  I've used Laravel to implement an API endpoint that returns a JSON response contains a list of hotel
+   rooms fetched from different data sources (Advertisers) sorted (cheapest to most expensive) without duplicating.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+# Perquisite
+- `Docker`  
+- `docker-compose`
+- `Makefile`
 
-## About Laravel
+# Dev-Ops Description :
+- Docker & docker-compose. 
+- register services  ``php-fpm ``, ``nginx``
+- Link each service to service registry .
+- use ``make`` command to automate operations
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Install
+- extract the .zip file or download using `git clone https://khaledsabbah@bitbucket.org/khaledsabbah/trivago.git`
+- `cd trivago` <small> ( go to task location )</small>
+- `make init`
+- You should see the following image
+![alt text](../images/Screenshot-20200625052906-1920x1053.png)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- To Open docker container use the following command 
+    
+        docker exec -it phpfpm /bin/bash
+        
+#Running
+*        Base Url :   http://localhost:8089
+######Sort Hotels' Rooms In Ascending Order API<SMALL> ( cheapest to expensive )</SMALL> :
+*       http://localhost:8089/api/v1/hotels  
+*       http://localhost:8089/api/v1/hotels?sort=1  
+######Sort Hotels' Rooms In Descending Order API<SMALL> ( expensive to cheapest )</SMALL> :
+*       http://localhost:8089/api/v1/hotels?sort=0
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Test Cases:
 
-## Learning Laravel
+- Run   `make test`
+- Then, you'll see result like this: ![alt text](../images/Screenshot-20200625053139-639x147.png) 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Code Desgin and Architect
+I tried to apply S.O.L.I.D principles & use some design pattern and Hydrate everything into object as possible.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### Patterns used:
+- ``Service Pattern``  Calling repository if any, retrieving data and aggregate multiple processes.
+- ``Factory Pattern``   Create an Advertiser object on the fly .
+- ``Hydrator Pattern``  Hydrate inputs ( eg. data ) into entities .
+- ``Composite Entity Pattern``  Applying composition and relations between Entities.
+- ``Filter Pattern``   Filter data and return only what meet the implemented criteria
+- ``Transformer Pattern``  Transform response object to and JSONable type like Array .
 
-## Laravel Sponsors
+##  Usage & steps to add new Advertiser or data source:
+1. Add advertiser entry in `config/advertisers.php`.  <SMALL>ex:`flipkey`</SMALL>.
+    >   retun [ 'airbnb' , 'booking' , `flipkey` ]
+    
+2. Inside `App\Advertisers`, Add advertiser class named as `Flipkey.php` <small> =>`ucfirst(flipkey)`</small> and must extend class ``AbstractAdvertiser``.
+ 
+3. Inside `Flipkey.php`, Define 3 attributes that works as Mapper for API reposponse:
+```php
+        const API_URL = '<String containing API url>'; 
+            ex: const API_URL= "https://f704cb9e-bf27-440c-a927-4c8e57e3bad1.mock.pstmn.io/s2/availability"
+    
+        protected $hotelKeys = ["<< Key Used In Code and Never Change That Key >> " => "API Reponse Key Mapper & changes Per Advertiser Response", ...];
+            ex: protected $hotelKeys = ['name' => 'name', 'stars' => 'stars', 'rooms' => 'rooms'];
+    
+        protected $roomKeys = ["<< Key Used In Code and Never Changes >> " => "API Reponse Keys Mapper & changes Per Advertiser Response", ...];
+            ex: protected $roomKeys = ['code' => 'code', 'name' => 'name', 'net_price' => 'net_rate', 'taxes' => 'taxes', 'total_price' => "totalPrice"];
+            
+```
+Look at This Image ![alt text](../images/hotel.png)
+        
+4. Go to the browser and write endpoint url [http://localhost:8089/api/v1/hotels](http://localhost:8089/api/v1/hotels)
+    > ```Note:  Even after adding advertiser classes, You can enable and disable them by removing them from config/advertisers.php ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-
-### Community Sponsors
-
-<a href="https://op.gg"><img src="http://opgg-static.akamaized.net/icon/t.rectangle.png" width="150"></a>
-
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [云软科技](http://www.yunruan.ltd/)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# WorkFlow
+- `Controller` calls `Service` Method to fetch data
+- `Hydrators` used to hydrate data using `Entities`.
+- `Fitlers` used do our logic remove repeated rooms and sort hydrated objects 
+- `Transformers` used to transform the result in the JSON Output.
