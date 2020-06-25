@@ -1,4 +1,4 @@
-FROM mikechernev/php7-fpm-laravel
+FROM cyberduck/php-fpm-laravel:7.3
 
 RUN apt-get update \
     && apt-get install -y git zlib1g-dev zip unzip \
