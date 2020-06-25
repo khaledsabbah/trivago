@@ -17,6 +17,7 @@
 - extract the .zip file or download using `git clone https://khaledsabbah@bitbucket.org/khaledsabbah/trivago.git`
 - `cd trivago` <small> ( go to task location )</small>
 - `make init`
+- `make install permission`
 - You should see the following image
 ![alt text](../images/Screenshot-20200625052906-1920x1053.png)
 
